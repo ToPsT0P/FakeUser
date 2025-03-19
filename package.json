@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "lint": "eslint . --fix"
   },
@@ -25,6 +27,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.4.0",
     "eslint-plugin-vue": "^9.30.0",
+    "gh-pages": "^6.3.0",
     "pinia": "^2.1.7",
     "sass": "1.77.8",
     "sass-embedded": "^1.77.8",
