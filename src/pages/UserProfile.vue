@@ -1,6 +1,6 @@
 <template>
   <v-row class="d-flex flex-column justify-center align-center ma-0 ">
-    <v-col cols="11" md="7" lg="6" class="mt-16 mb-16">
+    <v-col cols="12" sm="12" md="7" lg="6" class="mt-16 mb-16">
       <v-card variant="tonal" class="pa-6" style="min-height: 740px">
         <v-container class="d-flex w-100 flex-wrap gap-6 align-start justify-center">
 
@@ -52,6 +52,7 @@ import UserStats from "@/components/UserStats.vue";
 
 
 const store = useStore()
+
 
 onMounted(() => {
   store.fetchUserData()

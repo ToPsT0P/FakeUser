@@ -31,17 +31,18 @@ export const useStore = defineStore('useStore', {
       }
     },
 
-    async changeUserData() {
+    async changeUserData(name, age, bio) {
       try {
-        const response = await axios.patch('https://661c44f9e7b95ad7fa6a0d44.mockapi.io/User/1', {
-          Name: 'Александр Накидонский',
-          Age: 23,
-          Bio: "asd"
+        await axios.put('https://661c44f9e7b95ad7fa6a0d44.mockapi.io/User/1', {
+          Name: name,
+          Age: age,
+          Bio: bio
         });
 
-        console.log('Ответ сервера:', response.data);
       } catch (error) {
-        console.error('Ошибка при выполнении PATCH-запроса:', error);
+        console.error('Ошибка при выполнении put-запроса:', error);
+      }finally {
+        this.fetchUserData()
       }
     }
   },

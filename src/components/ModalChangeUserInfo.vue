@@ -12,16 +12,8 @@
             <v-row dense>
               <v-col cols="12" md="12" sm="12">
                 <v-text-field
-                  label="Имя*"
-                  v-model="firstName"
-                  :rules="nameRules"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="12" sm="12">
-                <v-text-field
-                  label="Фамилия*"
-                  v-model="lastName"
+                  label="Имя, Фамилия*"
+                  v-model="names"
                   :rules="nameRules"
                   required
                 ></v-text-field>
@@ -32,7 +24,6 @@
                   v-model="age"
                   :rules="ageRules"
                   type="number"
-                  required
                 ></v-text-field>
                 <v-textarea
                   label="Биография"
@@ -90,8 +81,7 @@ watch(dialog, (newValue) => {
 const valid = ref(false);
 const form = ref(null);
 
-const firstName = ref('');
-const lastName = ref('');
+const names = ref('');
 const age = ref('');
 const bio = ref('');
 
@@ -114,12 +104,11 @@ const closeDialog = () => {
 };
 
 const saveChanges = async () => {
-
-  const isValid = await form.value.validate();
-  console.log(isValid);
-  if (isValid) {
+  const { valid } =  await form.value.validate()
+  if (valid) {
     dialog.value = false;
     store.isVisible = false;
+    store.changeUserData(names.value, age.value, bio.value)
   }
 };
 </script>
