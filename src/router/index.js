@@ -5,7 +5,7 @@ import { setupLayouts } from 'virtual:generated-layouts'
 const routes = [{
   path: "/",
   name: "Home",
-  component: ()=>import("@/pages/index.vue")
+  component: ()=>import("@/pages/UserProfile.vue")
 }]
 
 const router = createRouter({

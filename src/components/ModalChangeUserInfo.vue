@@ -4,70 +4,64 @@
       v-if="store.isVisible"
       v-model="dialog"
       max-width="600"
+      @click:outside="closeDialog"
     >
-
-      <v-card
-        prepend-icon="mdi-account"
-        title="User Profile"
-      >
+      <v-card prepend-icon="mdi-account" title="Изменение профиля">
         <v-card-text>
-          <v-row dense>
-            <v-col
-              cols="12"
-              md="12"
-              sm="12"
-            >
-              <v-text-field
-                label="First name*"
-                required
-              ></v-text-field>
-            </v-col>
-
-
-
-            <v-col
-              cols="12"
-              md="12"
-              sm="12"
-            >
-              <v-text-field
-                label="Last name*"
-                persistent-hint
-                required
-              ></v-text-field>
-            </v-col>
-
-            <v-col
-              cols="12"
-              sm="12"
-            >
-              <v-text-field
-
-                label="Age*"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-
-          <small class="text-caption text-medium-emphasis">*indicates required field</small>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-row dense>
+              <v-col cols="12" md="12" sm="12">
+                <v-text-field
+                  label="Имя*"
+                  v-model="firstName"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" sm="12">
+                <v-text-field
+                  label="Фамилия*"
+                  v-model="lastName"
+                  :rules="nameRules"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="12">
+                <v-text-field
+                  label="Возраст"
+                  v-model="age"
+                  :rules="ageRules"
+                  type="number"
+                  required
+                ></v-text-field>
+                <v-textarea
+                  label="Биография"
+                  v-model="bio"
+                  :rules="bioRules"
+                  counter="200"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+            <small class="text-caption text-medium-emphasis">
+              *Значок обозначает обязательные поля
+            </small>
+          </v-form>
         </v-card-text>
 
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-
           <v-btn
             text="Close"
             variant="plain"
             @click="closeDialog"
           ></v-btn>
-
           <v-btn
             color="primary"
             text="Save"
             variant="tonal"
-            @click="dialog = false"
+            @click="saveChanges"
           ></v-btn>
         </v-card-actions>
       </v-card>
@@ -75,28 +69,60 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, watch } from 'vue';
-import { useVisability } from '@/stores/app.js';
+import { useStore } from '@/stores/app.js';
 
-const store = useVisability();
+const store = useStore();
 const dialog = ref(store.isVisible);
 
 watch(() => store.isVisible, (newValue) => {
   dialog.value = newValue;
 });
 
+watch(dialog, (newValue) => {
+  if (!newValue) {
+    store.isVisible = false;
+  }
+});
+
+
+const valid = ref(false);
+const form = ref(null);
+
+const firstName = ref('');
+const lastName = ref('');
+const age = ref('');
+const bio = ref('');
+
+const nameRules = [
+  v => !!v || 'Поле обязательно'
+];
+
+const ageRules = [
+  v => !!v || 'Возраст обязателен',
+  v => parseInt(v) >= 18 || 'Возраст должен быть не менее 18 лет'
+];
+
+const bioRules = [
+  v => (v.length <= 200) || 'Биография не должна превышать 200 символов'
+];
+
 const closeDialog = () => {
-  store.changeVisability();
+  dialog.value = false;
+  store.isVisible = false;
 };
 
-const saveChanges = () => {
-  store.changeVisability();
+const saveChanges = async () => {
+
+  const isValid = await form.value.validate();
+  console.log(isValid);
+  if (isValid) {
+    dialog.value = false;
+    store.isVisible = false;
+  }
 };
 </script>
-
-
 
 <style lang="scss" scoped>
 

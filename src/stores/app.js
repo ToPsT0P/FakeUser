@@ -2,7 +2,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-export const useVisability = defineStore('isVisible', {
+export const useStore = defineStore('useStore', {
 
   state: () => {
     return {
@@ -21,13 +21,27 @@ export const useVisability = defineStore('isVisible', {
       this.isLoading = true
 
       try {
-        const response = await axios.get('https://randomuser.me/api')
+        const response = await axios.get('https://661c44f9e7b95ad7fa6a0d44.mockapi.io/User')
         this.userData = response.data[0]
       } catch (error) {
         this.error = error
       } finally {
-        console.log(this.userData)
+
         this.isLoading = false
+      }
+    },
+
+    async changeUserData() {
+      try {
+        const response = await axios.patch('https://661c44f9e7b95ad7fa6a0d44.mockapi.io/User/1', {
+          Name: 'Александр Накидонский',
+          Age: 23,
+          Bio: "asd"
+        });
+
+        console.log('Ответ сервера:', response.data);
+      } catch (error) {
+        console.error('Ошибка при выполнении PATCH-запроса:', error);
       }
     }
   },
