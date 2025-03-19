@@ -53,6 +53,7 @@
             text="Save"
             variant="tonal"
             @click="saveChanges"
+            :disabled="!valid"
           ></v-btn>
         </v-card-actions>
       </v-card>
